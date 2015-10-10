@@ -1,0 +1,7 @@
+brusa.c:3:6:Brusa_MakeCTL	16	static
+brusa.c:20:5:Brusa_DecodeStatus	0	static
+brusa.c:38:5:Brusa_DecodeActI	8	static
+brusa.c:53:5:Brusa_DecodeActII	0	static
+brusa.c:67:5:Brusa_DecodeTemp	0	static
+brusa.c:80:5:Brusa_DecodeErr	8	static
+brusa.c:102:8:Brusa_Decode	8	static
