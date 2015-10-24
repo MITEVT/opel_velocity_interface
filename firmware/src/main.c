@@ -13,6 +13,12 @@
 
 extern volatile uint32_t msTicks;
 
+// Variables needed for wheel velocity calculation
+static char str[20];		// The array of chars for UART output
+volatile static uint32_t time;	// The current running average of time
+volatile static uint32_t count;	// The number of samples taken since the last output
+static uint32_t lastPrint;	// The last time for the output
+
 static CCAN_MSG_OBJ_T msg_obj; 					// Message Object data structure for manipulating CAN messages
 static RINGBUFF_T CAN_rx_buffer;				// Ring Buffer for storing received CAN messages
 static CCAN_MSG_OBJ_T _rx_buffer[BUFFER_SIZE]; 	// Underlying array used in ring buffer
@@ -74,6 +80,15 @@ void CAN_error(uint32_t error_info) {
 
 // -------------------------------------------------------------
 // Interrupt Service Routines
+//
+
+void TIMER32_0_IRQHandler(void){
+	Chip_TIMER_Reset(LPC_TIMER32_0);					// Reset the timer immediately 
+        Chip_TIMER_ClearCapture(LPC_TIMER32_0, 0);				// Clear the capture
+	time = (time*count+Chip_TIMER_ReadCapture(LPC_TIMER32_0,0))/(1+count);	// Continue the running average 
+	count++;								// Increase the count hto allow the running average to be properly computed
+}
+
 
 // -------------------------------------------------------------
 // Main Program Loop
