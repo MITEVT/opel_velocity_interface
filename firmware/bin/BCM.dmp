@@ -6,57 +6,57 @@ EXEC_P, HAS_SYMS, D_PAGED
 start address 0x000000c1
 
 Program Header:
-0x70000001 off    0x00008ae0 vaddr 0x00000ae0 paddr 0x00000ae0 align 2**2
+0x70000001 off    0x00008df8 vaddr 0x00000df8 paddr 0x00000df8 align 2**2
          filesz 0x00000008 memsz 0x00000008 flags r--
     LOAD off    0x00008000 vaddr 0x00000000 paddr 0x00000000 align 2**15
-         filesz 0x00000ae8 memsz 0x00000ae8 flags r-x
-    LOAD off    0x00010100 vaddr 0x10000100 paddr 0x00000ae8 align 2**15
-         filesz 0x00000004 memsz 0x00000144 flags rw-
-private flags = 5000002: [Version5 EABI] [has entry point]
+         filesz 0x00000e00 memsz 0x00000e00 flags r-x
+    LOAD off    0x00010100 vaddr 0x10000100 paddr 0x00000e00 align 2**15
+         filesz 0x00000004 memsz 0x0000018c flags rw-
+private flags = 5000202: [Version5 EABI] [soft-float ABI] [has entry point]
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00000ae0  00000000  00000000  00008000  2**2
+  0 .text         00000df8  00000000  00000000  00008000  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .ARM.exidx    00000008  00000ae0  00000ae0  00008ae0  2**2
+  1 .ARM.exidx    00000008  00000df8  00000df8  00008df8  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  2 .data         00000004  10000100  00000ae8  00010100  2**2
+  2 .data         00000004  10000100  00000e00  00010100  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  3 .bss          00000140  10000104  00000aec  00010104  2**2
+  3 .bss          00000184  10000108  00000e08  00010104  2**3
                   ALLOC
-  4 .heap         00001000  10000248  10000248  00010108  2**3
+  4 .heap         00001000  10000290  10000290  00010108  2**3
                   CONTENTS, READONLY
-  5 .stack_dummy  00000200  10000248  10000248  00011108  2**3
+  5 .stack_dummy  00000200  10000290  10000290  00011108  2**3
                   CONTENTS, READONLY
   6 .ARM.attributes 0000002d  00000000  00000000  00011308  2**0
                   CONTENTS, READONLY
   7 .comment      00000070  00000000  00000000  00011335  2**0
                   CONTENTS, READONLY
-  8 .debug_line   00002835  00000000  00000000  000113a5  2**0
+  8 .debug_line   0000264b  00000000  00000000  000113a5  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_info   00006092  00000000  00000000  00013bda  2**0
+  9 .debug_info   00006b4f  00000000  00000000  000139f0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_abbrev 0000131e  00000000  00000000  00019c6c  2**0
+ 10 .debug_abbrev 000015d9  00000000  00000000  0001a53f  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_aranges 000002d8  00000000  00000000  0001af90  2**3
+ 11 .debug_aranges 00000320  00000000  00000000  0001bb18  2**3
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000520  00000000  00000000  0001b268  2**3
+ 12 .debug_ranges 000005f0  00000000  00000000  0001be38  2**3
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_macro  000017e8  00000000  00000000  0001b788  2**0
+ 13 .debug_macro  000018d9  00000000  00000000  0001c428  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_str    0000b484  00000000  00000000  0001cf70  2**0
+ 14 .debug_str    0000b70d  00000000  00000000  0001dd01  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_frame  00000788  00000000  00000000  000283f4  2**2
+ 15 .debug_frame  00000830  00000000  00000000  00029410  2**2
                   CONTENTS, READONLY, DEBUGGING
- 16 .debug_loc    00001dce  00000000  00000000  00028b7c  2**0
+ 16 .debug_loc    00001ec0  00000000  00000000  00029c40  2**0
                   CONTENTS, READONLY, DEBUGGING
 SYMBOL TABLE:
 00000000 l    d  .text	00000000 .text
-00000ae0 l    d  .ARM.exidx	00000000 .ARM.exidx
+00000df8 l    d  .ARM.exidx	00000000 .ARM.exidx
 10000100 l    d  .data	00000000 .data
-10000104 l    d  .bss	00000000 .bss
-10000248 l    d  .heap	00000000 .heap
-10000248 l    d  .stack_dummy	00000000 .stack_dummy
+10000108 l    d  .bss	00000000 .bss
+10000290 l    d  .heap	00000000 .heap
+10000290 l    d  .stack_dummy	00000000 .stack_dummy
 00000000 l    d  .ARM.attributes	00000000 .ARM.attributes
 00000000 l    d  .comment	00000000 .comment
 00000000 l    d  .debug_line	00000000 .debug_line
@@ -73,110 +73,118 @@ SYMBOL TABLE:
 00001000 l       *ABS*	00000000 Heap_Size
 00000000 l    df *ABS*	00000000 chip_11xx.c
 00000000 l    df *ABS*	00000000 clock_11xx.c
-00000a00 l     O .text	00000040 wdtOSCRate
+00000cfc l     O .text	00000040 wdtOSCRate
 00000000 l    df *ABS*	00000000 gpio_11xx_2.c
 00000000 l    df *ABS*	00000000 ring_buffer.c
+00000000 l    df *ABS*	00000000 timer_11xx.c
 00000000 l    df *ABS*	00000000 uart_11xx.c
 00000000 l    df *ABS*	00000000 util.c
-00000a40 l     O .text	00000011 digits.4181
+00000d3c l     O .text	00000011 digits.4196
 00000000 l    df *ABS*	00000000 board.c
 00000000 l    df *ABS*	00000000 main.c
-10000104 l     O .bss	00000014 CAN_rx_buffer
-10000118 l     O .bss	00000008 UART_rx_buffer
-10000120 l     O .bss	00000004 CAN_error_info
-10000124 l     O .bss	00000014 msg_obj
-10000138 l     O .bss	00000001 CAN_error_flag
-1000013c l     O .bss	000000a0 _rx_buffer
-100001dc l     O .bss	00000064 str
+10000108 l     O .bss	00000064 str
+1000016c l     O .bss	00000008 uart_rx_buffer
+10000174 l     O .bss	00000017 rpm_str
+1000018c l     O .bss	00000004 can_error_info
+10000190 l     O .bss	00000002 curr_rpm
+10000192 l     O .bss	00000001 can_error_flag
+10000194 l     O .bss	00000014 can_rx_buffer
+100001a8 l     O .bss	00000018 msg_obj
+100001c0 l     O .bss	000000c0 _rx_buffer
+10000280 l     O .bss	00000004 rpm_count
+10000284 l     O .bss	00000004 rpm_time
 00000000 l    df *ABS*	00000000 sysinit.c
 00000000 l    df *ABS*	00000000 _udivsi3.o
-00000810 l       .text	00000000 .udivsi3_skip_div0_test
+00000914 l       .text	00000000 .udivsi3_skip_div0_test
 00000000 l    df *ABS*	00000000 _divsi3.o
-000008ac l       .text	00000000 .divsi3_skip_div0_test
+00000a34 l       .text	00000000 .divsi3_skip_div0_test
 00000000 l    df *ABS*	00000000 _dvmd_tls.o
-00000000 l    df *ABS*	00000000 memcpy-stub.c
+00000000 l    df *ABS*	00000000 memcpy.c
 00000000 l    df *ABS*	00000000 strlen.c
 00000000 l    df *ABS*	00000000 
-00000ae8 l       .ARM.exidx	00000000 __exidx_end
-00000ae8 l       .ARM.exidx	00000000 __etext
-00000ae0 l       .text	00000000 __exidx_start
-10000248 g       .heap	00001000 __HeapBase
+00000e00 l       .ARM.exidx	00000000 __exidx_end
+00000e00 l       .ARM.exidx	00000000 __etext
+00000df8 l       .text	00000000 __exidx_start
+10000290 g       .heap	00001000 __HeapBase
 000000da  w    F .text	00000002 TIMER16_0_IRQHandler
 10000100 g       .data	00000000 __data_start__
-000003ec g     F .text	0000001a Board_LEDs_Init
+0000043c g     F .text	0000001a Board_LEDs_Init
 000000d2  w    F .text	00000002 HardFault_Handler
-00000212 g     F .text	00000030 RingBuffer_Pop
-00000380 g     F .text	00000010 SysTick_Handler
-000002c4 g     F .text	00000038 Chip_UART_SetBaud
+00000214 g     F .text	00000030 RingBuffer_Pop
+000003d0 g     F .text	00000010 SysTick_Handler
+00000318 g     F .text	00000038 Chip_UART_SetBaud
 000000d6  w    F .text	00000002 PendSV_Handler
 000000d0  w    F .text	00000002 NMI_Handler
 00000188 g     F .text	00000014 Chip_Clock_GetSystemClockRate
 000000da  w    F .text	00000002 UART_IRQHandler
-000000da  w    F .text	00000002 TIMER32_0_IRQHandler
-00000498 g     F .text	000000e0 Board_CAN_Init
+000005f4 g     F .text	0000003c TIMER32_0_IRQHandler
+00000564 g     F .text	00000048 Board_CAN_Init
 000000da  w    F .text	00000002 TIMER32_1_IRQHandler
-0000046c g     F .text	00000014 Board_UART_SendBlocking
-0000096c g     F .text	00000082 memcpy
+00000280 g     F .text	00000018 Chip_TIMER_Reset
+000004bc g     F .text	00000014 Board_UART_SendBlocking
+00000c18 g     F .text	0000007c memcpy
 10000100 g     O .data	00000004 SystemCoreClock
-00000244 g     F .text	00000028 Chip_UART_Init
-0000080c g     F .text	00000088 .hidden __udivsi3
-10001248 g       .heap	00000000 __HeapLimit
-10000104 g       .bss	00000000 __bss_start__
-00000578 g     F .text	00000002 CAN_tx
-00000310 g     F .text	00000070 itoa
+00000298 g     F .text	00000028 Chip_UART_Init
+00000914 g     F .text	0000010a .hidden __udivsi3
+10001290 g       .heap	00000000 __HeapLimit
+10000108 g       .bss	00000000 __bss_start__
+000005ac g     F .text	00000002 CAN_tx
+00000364 g     F .text	0000006c itoa
 00000114 g     F .text	00000028 Chip_Clock_GetSystemPLLInClockRate
 000000da  w    F .text	00000002 PIOINT1_IRQHandler
-000002fc g     F .text	00000014 __reverse
-00000458 g     F .text	00000014 Board_UART_Println
-00000390 g     F .text	00000014 CAN_IRQHandler
+00000350 g     F .text	00000014 __reverse
+000004a8 g     F .text	00000014 Board_UART_Println
+000003e0 g     F .text	00000014 CAN_IRQHandler
 000000da  w    F .text	00000002 SSP0_IRQHandler
-00000590 g     F .text	00000038 CAN_rx
-000001e4 g     F .text	0000002e RingBuffer_Insert
+000005c4 g     F .text	00000030 CAN_rx
+000001e4 g     F .text	00000030 RingBuffer_Insert
 000000c0 g     F .text	00000010 Reset_Handler
 00000154 g     F .text	00000034 Chip_Clock_GetMainClockRate
-000008a8 g     F .text	00000000 .hidden __aeabi_idiv
-0000057c g     F .text	00000014 CAN_error
+00000a34 g     F .text	00000000 .hidden __aeabi_idiv
+000005b0 g     F .text	00000014 CAN_error
 10000104 g       .data	00000000 __data_end__
-10000244 g       .bss	00000000 __bss_end__
+1000028c g       .bss	00000000 __bss_end__
 000000da  w    F .text	00000002 TIMER16_1_IRQHandler
 000000da g     F .text	00000002 Default_Handler
 000001ac g     F .text	00000028 Chip_GPIO_WriteDirBit
 0000019c g     F .text	00000010 Chip_GPIO_Init
 000000da  w    F .text	00000002 ADC_IRQHandler
-00000a54 g     O .text	00000004 OscRateIn
+00000d50 g     O .text	00000004 OscRateIn
 000000da  w    F .text	00000002 SSP1_IRQHandler
+00000244 g     F .text	0000003c Chip_TIMER_Init
 000000da  w    F .text	00000002 PIOINT2_IRQHandler
-00000968  w    F .text	00000002 .hidden __aeabi_ldiv0
+000004e8 g     F .text	0000007c CAN_baudrate_calculate
+00000c14  w    F .text	00000002 .hidden __aeabi_ldiv0
 000000da  w    F .text	00000002 BOD_IRQHandler
-00000440 g     F .text	00000018 Board_UART_Print
+00000490 g     F .text	00000018 Board_UART_Print
 000000da  w    F .text	00000002 WAKEUP_IRQHandler
-0000026c g     F .text	0000001a Chip_UART_Send
+000002c0 g     F .text	0000001a Chip_UART_Send
 0000013c g     F .text	00000018 Chip_Clock_GetSystemPLLOutClockRate
 000000da  w    F .text	00000002 PIOINT0_IRQHandler
 000000da  w    F .text	00000002 I2C_IRQHandler
 00000000 g       .text	000000c0 __isr_vector
-000005c8 g     F .text	000001b8 main
-000002aa g     F .text	0000001a Chip_UART_Read
+00000630 g     F .text	00000258 main
+000002fe g     F .text	0000001a Chip_UART_Read
 000000da  w    F .text	00000002 WDT_IRQHandler
-0000080c g     F .text	00000000 .hidden __aeabi_uidiv
+00000914 g     F .text	00000000 .hidden __aeabi_uidiv
 000000d4  w    F .text	00000002 SVC_Handler
-10000248 g       .heap	00000000 __end__
-000008a8 g     F .text	000000ac .hidden __divsi3
-00000780 g     F .text	0000008c SystemInit
-00000480 g     F .text	00000018 Board_UART_Read
+10000290 g       .heap	00000000 __end__
+00000a34 g     F .text	000001cc .hidden __divsi3
+00000888 g     F .text	0000008c SystemInit
+000004d0 g     F .text	00000018 Board_UART_Read
 000000ec g     F .text	00000028 Chip_Clock_GetWDTOSCRate
-00000286 g     F .text	00000024 Chip_UART_SendBlocking
+000002da g     F .text	00000024 Chip_UART_SendBlocking
 10002000 g       *ABS*	00000000 __StackTop
-10000240 g     O .bss	00000004 msTicks
-00000894 g     F .text	00000012 .hidden __aeabi_uidivmod
+10000288 g     O .bss	00000004 msTicks
+00000a20 g     F .text	00000012 .hidden __aeabi_uidivmod
 10001e00 g       *ABS*	00000200 __StackLimit
 000000dc g     F .text	00000010 SystemCoreClockUpdate
 000001d4 g     F .text	00000010 RingBuffer_Init
-00000968  w    F .text	00000002 .hidden __aeabi_idiv0
+00000c14  w    F .text	00000002 .hidden __aeabi_idiv0
 000000da  w    F .text	00000002 PIOINT3_IRQHandler
-000009f0 g     F .text	0000000e strlen
-000003a4 g     F .text	00000048 Board_SysTick_Init
-00000954 g     F .text	00000012 .hidden __aeabi_idivmod
-00000408 g     F .text	00000038 Board_UART_Init
+00000c94 g     F .text	00000068 strlen
+000003f4 g     F .text	00000048 Board_SysTick_Init
+00000c00 g     F .text	00000012 .hidden __aeabi_idivmod
+00000458 g     F .text	00000038 Board_UART_Init
 
 

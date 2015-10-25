@@ -1,11 +1,13 @@
 bin/sysinit.o: src/sysinit.c \
- /usr/local/Cellar/gcc-arm-none-eabi/20140805/lib/gcc/arm-none-eabi/4.8.4/include/stdint.h \
- /usr/local/Cellar/gcc-arm-none-eabi/20140805/arm-none-eabi/include/stdint.h \
- /usr/local/Cellar/gcc-arm-none-eabi/20140805/arm-none-eabi/include/machine/_default_types.h \
- /usr/local/Cellar/gcc-arm-none-eabi/20140805/arm-none-eabi/include/sys/features.h \
+ /usr/lib/gcc/arm-none-eabi/4.9.3/include/stdint.h \
+ /usr/arm-none-eabi/include/stdint.h \
+ /usr/arm-none-eabi/include/machine/_default_types.h \
+ /usr/arm-none-eabi/include/sys/features.h \
+ /usr/arm-none-eabi/include/sys/_intsup.h \
+ /usr/arm-none-eabi/include/sys/_stdint.h \
  ../../lpc11cx4-library/lpc_chip_11cxx_lib/inc/chip.h \
  ../../lpc11cx4-library/lpc_chip_11cxx_lib/inc/lpc_types.h \
- /usr/local/Cellar/gcc-arm-none-eabi/20140805/lib/gcc/arm-none-eabi/4.8.4/include/stdbool.h \
+ /usr/lib/gcc/arm-none-eabi/4.9.3/include/stdbool.h \
  ../../lpc11cx4-library/lpc_chip_11cxx_lib/inc/sys_config.h \
  ../../lpc11cx4-library/lpc_chip_11cxx_lib/inc/cmsis.h \
  ../../lpc11cx4-library/lpc_chip_11cxx_lib/inc/cmsis_11cxx.h \
@@ -29,19 +31,23 @@ bin/sysinit.o: src/sysinit.c \
  ../../lpc11cx4-library/lpc_chip_11cxx_lib/inc/i2c_11xx.h \
  ../../lpc11cx4-library/lpc_chip_11cxx_lib/inc/ccand_11xx.h
 
-/usr/local/Cellar/gcc-arm-none-eabi/20140805/lib/gcc/arm-none-eabi/4.8.4/include/stdint.h:
+/usr/lib/gcc/arm-none-eabi/4.9.3/include/stdint.h:
 
-/usr/local/Cellar/gcc-arm-none-eabi/20140805/arm-none-eabi/include/stdint.h:
+/usr/arm-none-eabi/include/stdint.h:
 
-/usr/local/Cellar/gcc-arm-none-eabi/20140805/arm-none-eabi/include/machine/_default_types.h:
+/usr/arm-none-eabi/include/machine/_default_types.h:
 
-/usr/local/Cellar/gcc-arm-none-eabi/20140805/arm-none-eabi/include/sys/features.h:
+/usr/arm-none-eabi/include/sys/features.h:
+
+/usr/arm-none-eabi/include/sys/_intsup.h:
+
+/usr/arm-none-eabi/include/sys/_stdint.h:
 
 ../../lpc11cx4-library/lpc_chip_11cxx_lib/inc/chip.h:
 
 ../../lpc11cx4-library/lpc_chip_11cxx_lib/inc/lpc_types.h:
 
-/usr/local/Cellar/gcc-arm-none-eabi/20140805/lib/gcc/arm-none-eabi/4.8.4/include/stdbool.h:
+/usr/lib/gcc/arm-none-eabi/4.9.3/include/stdbool.h:
 
 ../../lpc11cx4-library/lpc_chip_11cxx_lib/inc/sys_config.h:
 
