@@ -3,7 +3,7 @@
 *.ko
 *.obj
 *.elf
-
+*.su
 # Precompiled Headers
 *.gch
 *.pch
@@ -27,11 +27,15 @@
 *.i*86
 *.x86_64
 *.hex
-*.lst
-*.d
+*.axf
+*.map
 
-# Debug files
-*.dSYM/
+# Utilities
+*.jar
+*.dia*
+*.sh
+.DS_Store
 
-# Vim
-*.swp
+firmware/bin/
+firmware/testbin/
+firmware/doc/
