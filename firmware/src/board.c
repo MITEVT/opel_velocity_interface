@@ -146,13 +146,6 @@ void Board_Setup_Timers(void){
         NVIC_ClearPendingIRQ(TIMER_32_0_IRQn);  // Ensure that there are no pending interrupts on TIMER_32_0_IRQn
         NVIC_EnableIRQ(TIMER_32_0_IRQn);        // Enable interrupts on TIMER_32_0_IRQn
         Chip_TIMER_Enable(LPC_TIMER32_0);                                               // Start the timer
-
-        Chip_IOCON_PinMuxSet(LPC_IOCON, IOCON_PIO1_0, (IOCON_FUNC3|IOCON_MODE_INACT| (1<<7)));  // Set up port 1, pin 0 for use in the timer capture function, turn off analog
-        NVIC_SetPriority(TIMER_32_1_IRQn, 0);   // Ensure that the 32 bit timer capture interrupt has the highest priority
-        NVIC_ClearPendingIRQ(TIMER_32_1_IRQn);  // Ensure that there are no pending interrupts on TIMER_32_1_IRQn
-        NVIC_EnableIRQ(TIMER_32_1_IRQn);        // Enable interrupts on TIMER_32_1_IRQn
-        Chip_TIMER_Enable(LPC_TIMER32_1);       // Start the timer
-
 }
 
 void Board_Timer0_Reset_Clear(void){
@@ -161,16 +154,6 @@ void Board_Timer0_Reset_Clear(void){
 
 }
 
-void Board_Timer1_Reset_Clear(void){
-	Chip_TIMER_Reset(LPC_TIMER32_1);            // Reset the timer immediately 
-	Chip_TIMER_ClearCapture(LPC_TIMER32_1, 0);              // Clear the capture
-
-}
-
 uint32_t Board_Timer0_ReadCapture(void){
 	return Chip_TIMER_ReadCapture(LPC_TIMER32_0,0);	
-}
-
-uint32_t Board_Timer1_ReadCapture(void){
-	return Chip_TIMER_ReadCapture(LPC_TIMER32_1,0);	
 }

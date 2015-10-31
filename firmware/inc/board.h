@@ -104,14 +104,25 @@ int8_t Board_UART_Read(void *data, uint8_t num_bytes);
 
 void Board_CAN_Init(uint32_t baudrate, void (*rx_callback)(uint8_t), void (*tx_callback)(uint8_t), void (*error_callback)(uint32_t));
 
+/*
+ * Reset 32 bit Timer 0 and clear interrupts
+ *
+ */
 void Board_Timer0_Reset_Clear(void);
 
-void Board_Timer1_Reset_Clear(void);
+/*
+ * Read the capture register of 32 bit Timer 0
+ *
+ * @return	The value of capture register 0 of 32 bit Timer 0
+ *
+*/
 
 uint32_t Board_Timer0_ReadCapture(void);
 
-uint32_t Board_Timer1_ReadCapture(void);
-
+/*
+ * Setup the Timer
+ *
+*/
 void Board_Setup_Timers(void);
 
 #endif

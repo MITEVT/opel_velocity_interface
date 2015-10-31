@@ -20,8 +20,6 @@ static char rpm_str[23];		// Used for composing UART messages
 volatile static uint32_t rpm_time;	// The current running average of time
 volatile static uint32_t rpm_count;	// Number of samples taken since the last output
 volatile static uint16_t curr_rpm;	// Current RPM measurement
-volatile static uint32_t rpm_time_2;
-volatile static uint32_t rpm_count_2;
 
 static CCAN_MSG_OBJ_T msg_obj; 	// Message Object data structure for manipulating CAN messages
 static RINGBUFF_T can_rx_buffer; // Ring Buffer for storing received CAN messages
@@ -85,13 +83,6 @@ void TIMER32_0_IRQHandler(void){
 	rpm_time = (rpm_time*rpm_count+Board_Timer0_ReadCapture())/(1+rpm_count);	// Continue the running average 
 	rpm_count++;    // Increase the count hto allow the running average to be properly computed
 }
-
-void TIMER32_1_IRQHandler(void){
-	Board_Timer1_Reset_Clear();
-        rpm_time_2 = (rpm_time_2*rpm_count_2+Board_Timer1_ReadCapture())/(1+rpm_count_2);  // Continue the running average 
-        rpm_count_2++;    // Increase the count hto allow the running average to be properly computed
-}
-
 // -------------------------------------------------------------
 // Main Program Loop
 
@@ -123,7 +114,6 @@ int main(void)
 	Board_CAN_Init(CCAN_BAUD_RATE, CAN_rx, CAN_tx, CAN_error);
 
 	rpm_count = 0;
-	rpm_count_2 = 0;
 
 	Board_Setup_Timers();
 
@@ -197,16 +187,8 @@ int main(void)
 
 			msg_obj.mode_id = 0x703;
 			msg_obj.msgobj = 2;
-			msg_obj.dlc = 4;
+			msg_obj.dlc = 2;
 			msg_obj.data_16[0] = curr_rpm;
-
-			curr_rpm = 60 * SystemCoreClock/rpm_time_2/GMB_EDGES_PER_ROTATION;
-			itoa(curr_rpm, rpm_str, 10);
-			rpm_time_2 = 0;
-			rpm_count_2 = 0;
-			Board_UART_Println(rpm_str);	
-
-			msg_obj.data_16[1] = curr_rpm;
 			LPC_CCAN_API->can_transmit(&msg_obj);	
 		}
 
