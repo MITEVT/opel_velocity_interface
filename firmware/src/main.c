@@ -20,6 +20,8 @@ static char rpm_str[23];		// Used for composing UART messages
 volatile static uint32_t rpm_time;	// The current running average of time
 volatile static uint32_t rpm_count;	// Number of samples taken since the last output
 volatile static uint16_t curr_rpm;	// Current RPM measurement
+volatile static uint32_t rpm_time_2;
+volatile static uint32_t rpm_count_2;
 
 static CCAN_MSG_OBJ_T msg_obj; 	// Message Object data structure for manipulating CAN messages
 static RINGBUFF_T can_rx_buffer; // Ring Buffer for storing received CAN messages
@@ -79,10 +81,15 @@ void CAN_error(uint32_t error_info) {
 // Interrupt Service Routines
 
 void TIMER32_0_IRQHandler(void){
-	Chip_TIMER_Reset(LPC_TIMER32_0);	    // Reset the timer immediately 
-	Chip_TIMER_ClearCapture(LPC_TIMER32_0, 0);		// Clear the capture
-	rpm_time = (rpm_time*rpm_count+Chip_TIMER_ReadCapture(LPC_TIMER32_0,0))/(1+rpm_count);	// Continue the running average 
+	Board_Timer0_Reset_Clear();
+	rpm_time = (rpm_time*rpm_count+Board_Timer0_ReadCapture())/(1+rpm_count);	// Continue the running average 
 	rpm_count++;    // Increase the count hto allow the running average to be properly computed
+}
+
+void TIMER32_1_IRQHandler(void){
+	Board_Timer1_Reset_Clear();
+        rpm_time_2 = (rpm_time_2*rpm_count_2+Board_Timer1_ReadCapture())/(1+rpm_count_2);  // Continue the running average 
+        rpm_count_2++;    // Increase the count hto allow the running average to be properly computed
 }
 
 // -------------------------------------------------------------
@@ -115,22 +122,10 @@ int main(void)
 	RingBuffer_Flush(&can_rx_buffer);
 	Board_CAN_Init(CCAN_BAUD_RATE, CAN_rx, CAN_tx, CAN_error);
 
-    //---------------
-    // Initialize the timer
-	Chip_TIMER_Init(LPC_TIMER32_0);
-	Chip_TIMER_Reset(LPC_TIMER32_0);
-	Chip_TIMER_PrescaleSet(LPC_TIMER32_0, 0);
-	LPC_TIMER32_0->CCR |= 5; // Set the first and third bits of the capture value in the Capture Control Register (see user manual)
 	rpm_count = 0;
+	rpm_count_2 = 0;
 
-    //---------------
-	// Setup timer interrupt
-	Chip_IOCON_PinMuxSet(LPC_IOCON, IOCON_PIO1_5, (IOCON_FUNC2|IOCON_MODE_INACT));	// Set up port 1, pin 5 for use in the timer capture function
-	NVIC_SetPriority(SysTick_IRQn, 1);	// Give the SysTick function a lower priority
-	NVIC_SetPriority(TIMER_32_0_IRQn, 0);   // Ensure that the 32 bit timer capture interrupt has the highest priority
-	NVIC_ClearPendingIRQ(TIMER_32_0_IRQn);	// Ensure that there are no pending interrupts on TIMER_32_0_IRQn
-	NVIC_EnableIRQ(TIMER_32_0_IRQn);	// Enable interrupts on TIMER_32_0_IRQn
-	Chip_TIMER_Enable(LPC_TIMER32_0);						// Start the timer
+	Board_Setup_Timers();
 
 	// For your convenience.
 	// typedef struct CCAN_MSG_OBJ {
@@ -202,9 +197,17 @@ int main(void)
 
 			msg_obj.mode_id = 0x703;
 			msg_obj.msgobj = 2;
-			msg_obj.dlc = 2;
+			msg_obj.dlc = 4;
 			msg_obj.data_16[0] = curr_rpm;
-			LPC_CCAN_API->can_transmit(&msg_obj);
+
+			curr_rpm = 60 * SystemCoreClock/rpm_time_2/GMB_EDGES_PER_ROTATION;
+			itoa(curr_rpm, rpm_str, 10);
+			rpm_time_2 = 0;
+			rpm_count_2 = 0;
+			Board_UART_Println(rpm_str);	
+
+			msg_obj.data_16[1] = curr_rpm;
+			LPC_CCAN_API->can_transmit(&msg_obj);	
 		}
 
 	}

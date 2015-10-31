@@ -104,5 +104,14 @@ int8_t Board_UART_Read(void *data, uint8_t num_bytes);
 
 void Board_CAN_Init(uint32_t baudrate, void (*rx_callback)(uint8_t), void (*tx_callback)(uint8_t), void (*error_callback)(uint32_t));
 
+void Board_Timer0_Reset_Clear(void);
+
+void Board_Timer1_Reset_Clear(void);
+
+uint32_t Board_Timer0_ReadCapture(void);
+
+uint32_t Board_Timer1_ReadCapture(void);
+
+void Board_Setup_Timers(void);
 
 #endif
