@@ -80,7 +80,7 @@ void CAN_error(uint32_t error_info) {
 
 void TIMER32_0_IRQHandler(void){
 	Chip_TIMER_Reset(LPC_TIMER32_0);	    // Reset the timer immediately 
-    Chip_TIMER_ClearCapture(LPC_TIMER32_0, 0);		// Clear the capture
+	Chip_TIMER_ClearCapture(LPC_TIMER32_0, 0);		// Clear the capture
 	rpm_time = (rpm_time*rpm_count+Chip_TIMER_ReadCapture(LPC_TIMER32_0,0))/(1+rpm_count);	// Continue the running average 
 	rpm_count++;    // Increase the count hto allow the running average to be properly computed
 }
@@ -121,7 +121,7 @@ int main(void)
 	Chip_TIMER_Reset(LPC_TIMER32_0);
 	Chip_TIMER_PrescaleSet(LPC_TIMER32_0, 0);
 	LPC_TIMER32_0->CCR |= 5; // Set the first and third bits of the capture value in the Capture Control Register (see user manual)
-    rpm_count = 0;
+	rpm_count = 0;
 
     //---------------
 	// Setup timer interrupt
@@ -129,7 +129,7 @@ int main(void)
 	NVIC_SetPriority(SysTick_IRQn, 1);	// Give the SysTick function a lower priority
 	NVIC_SetPriority(TIMER_32_0_IRQn, 0);   // Ensure that the 32 bit timer capture interrupt has the highest priority
 	NVIC_ClearPendingIRQ(TIMER_32_0_IRQn);	// Ensure that there are no pending interrupts on TIMER_32_0_IRQn
-    NVIC_EnableIRQ(TIMER_32_0_IRQn);	// Enable interrupts on TIMER_32_0_IRQn
+	NVIC_EnableIRQ(TIMER_32_0_IRQn);	// Enable interrupts on TIMER_32_0_IRQn
 	Chip_TIMER_Enable(LPC_TIMER32_0);						// Start the timer
 
 	// For your convenience.
@@ -184,19 +184,6 @@ int main(void)
 
 	while (1) {
         
-		if (!RingBuffer_IsEmpty(&can_rx_buffer)) {
-			CCAN_MSG_OBJ_T temp_msg;
-			RingBuffer_Pop(&can_rx_buffer, &temp_msg);
-			Board_UART_Print("Received Message ID: 0x");
-			itoa(temp_msg.mode_id, str, 16);
-			Board_UART_Println(str);
-
-			Board_UART_Print("\t0x");
-			itoa(temp_msg.data_16[0], str, 16);
-			Board_UART_Println(str);
-
-		}	
-
 		if (can_error_flag) {
 			can_error_flag = false;
 			Board_UART_Print("CAN Error: 0b");
@@ -204,39 +191,20 @@ int main(void)
 			Board_UART_Println(str);
 		}
 
-		uint8_t count;
-		if ((count = Board_UART_Read(uart_rx_buffer, BUFFER_SIZE)) != 0) {
-			Board_UART_SendBlocking(uart_rx_buffer, count); // Echo user input
-			switch (uart_rx_buffer[0]) {
-				case 'a':
-					Board_UART_Println("Sending CAN message with ID: 0x703");
-	                msg_obj.mode_id = 0x703;
-					msg_obj.msgobj = 2;
-					msg_obj.dlc = 2;
-					msg_obj.data_16[0] = 0xAABB;
-					LPC_CCAN_API->can_transmit(&msg_obj);
-					break;
-				default:
-					Board_UART_Println("Invalid Command");
-					break;
-			}
-		}
-
-
-        // TODO: set this to trigger at 1Hz
 		if(msTicks % 200 == 0){	// 5 times per second
-            curr_rpm = 60 * SystemCoreClock/rpm_time/GMB_EDGES_PER_ROTATION;
-		    itoa(curr_rpm, rpm_str, 10); 
+     			curr_rpm = 60 * SystemCoreClock/rpm_time/GMB_EDGES_PER_ROTATION;
+			itoa(curr_rpm, rpm_str, 10); 
 			rpm_time = 0;	// Set the average time back to 0
 			rpm_count = 0;	// Set the count for the average back to 0
 
 			Board_UART_Print("Sending wheel velocity CAN message with ID: 0x703 Data: ");
 			Board_UART_Println(rpm_str);
-            msg_obj.mode_id = 0x703;
-            msg_obj.msgobj = 2;
-            msg_obj.dlc = 2;
-            msg_obj.data_16[0] = curr_rpm;
-            LPC_CCAN_API->can_transmit(&msg_obj);
+
+			msg_obj.mode_id = 0x703;
+			msg_obj.msgobj = 2;
+			msg_obj.dlc = 2;
+			msg_obj.data_16[0] = curr_rpm;
+			LPC_CCAN_API->can_transmit(&msg_obj);
 		}
 
 	}
