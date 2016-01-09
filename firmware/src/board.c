@@ -124,3 +124,36 @@ void Board_CAN_Init(uint32_t baudrate, void (*rx_callback)(uint8_t), void (*tx_c
 	/* Enable the CAN Interrupt */
 	NVIC_EnableIRQ(CAN_IRQn);
 }
+
+void Board_Setup_Timers(void){
+    //---------------
+    // Initialize the timer
+        Chip_TIMER_Init(LPC_TIMER32_0);
+        Chip_TIMER_Reset(LPC_TIMER32_0);
+        Chip_TIMER_PrescaleSet(LPC_TIMER32_0, 0);
+        LPC_TIMER32_0->CCR |= 5; // Set the first and third bits of the capture value in the Capture Control Register (see user manual)
+
+        Chip_TIMER_Init(LPC_TIMER32_1);
+        Chip_TIMER_Reset(LPC_TIMER32_1);
+        Chip_TIMER_PrescaleSet(LPC_TIMER32_1, 0);
+        LPC_TIMER32_1->CCR |= 5; // Set the first and third bits of the capture value in the Capture Control Register (see user manual)
+
+    //---------------
+        // Setup timer interrupt
+        Chip_IOCON_PinMuxSet(LPC_IOCON, IOCON_PIO1_5, (IOCON_FUNC2|IOCON_MODE_INACT));  // Set up port 1, pin 5 for use in the timer capture function
+        NVIC_SetPriority(SysTick_IRQn, 1);      // Give the SysTick function a lower priority
+        NVIC_SetPriority(TIMER_32_0_IRQn, 0);   // Ensure that the 32 bit timer capture interrupt has the highest priority
+        NVIC_ClearPendingIRQ(TIMER_32_0_IRQn);  // Ensure that there are no pending interrupts on TIMER_32_0_IRQn
+        NVIC_EnableIRQ(TIMER_32_0_IRQn);        // Enable interrupts on TIMER_32_0_IRQn
+        Chip_TIMER_Enable(LPC_TIMER32_0);                                               // Start the timer
+}
+
+void Board_Timer0_Reset_Clear(void){
+	Chip_TIMER_Reset(LPC_TIMER32_0);            // Reset the timer immediately 
+	Chip_TIMER_ClearCapture(LPC_TIMER32_0, 0);              // Clear the capture
+
+}
+
+uint32_t Board_Timer0_ReadCapture(void){
+	return Chip_TIMER_ReadCapture(LPC_TIMER32_0,0);	
+}
