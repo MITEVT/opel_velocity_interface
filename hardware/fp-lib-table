@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name MITEVT_autoConnectors)(type KiCad)(uri /Users/SirCharles/evt_files/EVT_KICAD_LIBS/MITEVT_autoConnectors.pretty)(options "")(descr ""))
+)
