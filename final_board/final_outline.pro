@@ -1,4 +1,4 @@
-update=Saturday, December 05, 2015 'AMt' 11:42:07 AM
+update=Sat 09 Jan 2016 05:58:38 PM EST
 version=1
 last_client=kicad
 [pcbnew]
@@ -66,3 +66,4 @@ LibName34=MITEVT_mcontrollers
 LibName35=MITEVT_OPTO
 LibName36=MITEVT_power
 LibName37=MITEVT_REG
+LibName38=/home/helmuth/zsr1000gta

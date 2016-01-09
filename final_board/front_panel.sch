@@ -1,5 +1,4 @@
 EESchema Schematic File Version 2
-LIBS:final_outline-rescue
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -36,6 +35,7 @@ LIBS:MITEVT_mcontrollers
 LIBS:MITEVT_OPTO
 LIBS:MITEVT_power
 LIBS:MITEVT_REG
+LIBS:zsr1000gta
 LIBS:final_outline-cache
 EELAYER 25 0
 EELAYER END
@@ -74,7 +74,7 @@ F 3 "" H 3000 2500 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 Text HLabel 2800 2050 0    60   Output ~ 0
-+5V
++12V
 Text HLabel 4300 2050 2    60   Output ~ 0
 RXD
 Text HLabel 2800 1800 0    60   Input ~ 0
@@ -84,10 +84,10 @@ MCU_RESET_N
 Text HLabel 4300 2300 2    60   Output ~ 0
 MCU_PROG_N
 $Comp
-L GND #PWR06
+L GND #PWR07
 U 1 1 563E4869
 P 5300 1900
-F 0 "#PWR06" H 5300 1650 50  0001 C CNN
+F 0 "#PWR07" H 5300 1650 50  0001 C CNN
 F 1 "GND" H 5300 1750 50  0000 C CNN
 F 2 "" H 5300 1900 60  0000 C CNN
 F 3 "" H 5300 1900 60  0000 C CNN
@@ -108,10 +108,10 @@ $EndComp
 Text HLabel 4000 3750 2    60   Output ~ 0
 LED1
 $Comp
-L GND #PWR07
+L GND #PWR08
 U 1 1 563E4469
 P 2200 3200
-F 0 "#PWR07" H 2200 2950 50  0001 C CNN
+F 0 "#PWR08" H 2200 2950 50  0001 C CNN
 F 1 "GND" H 2200 3050 50  0000 C CNN
 F 2 "" H 2200 3200 60  0000 C CNN
 F 3 "" H 2200 3200 60  0000 C CNN

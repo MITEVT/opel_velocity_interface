@@ -1,5 +1,4 @@
 EESchema Schematic File Version 2
-LIBS:final_outline-rescue
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -36,6 +35,7 @@ LIBS:MITEVT_mcontrollers
 LIBS:MITEVT_OPTO
 LIBS:MITEVT_power
 LIBS:MITEVT_REG
+LIBS:zsr1000gta
 LIBS:final_outline-cache
 EELAYER 25 0
 EELAYER END
@@ -67,7 +67,7 @@ S 2300 2700 1300 1800
 U 56353BB7
 F0 "FRONT_PANEL" 60
 F1 "front_panel.sch" 60
-F2 "+5V" O R 3600 2850 60 
+F2 "+12V" O R 3600 2850 60 
 F3 "RXD" O R 3600 3050 60 
 F4 "TXD" I R 3600 3150 60 
 F5 "MCU_RESET_N" O R 3600 3250 60 
@@ -111,6 +111,7 @@ F1 "power.sch" 60
 F2 "+12V" I L 4850 2150 60 
 F3 "+3V3" O R 6050 2150 60 
 F4 "+5V" O R 6050 2550 60 
+F5 "+10V" O R 6050 2800 60 
 $EndSheet
 Wire Wire Line
 	6450 2150 6050 2150
@@ -275,4 +276,19 @@ Wire Wire Line
 	6450 3850 7400 3850
 Wire Wire Line
 	7400 3750 6450 3750
+$Comp
+L VCC #PWR04
+U 1 1 56920327
+P 6450 2750
+F 0 "#PWR04" H 6450 2600 50  0001 C CNN
+F 1 "VCC" H 6450 2900 50  0000 C CNN
+F 2 "" H 6450 2750 50  0000 C CNN
+F 3 "" H 6450 2750 50  0000 C CNN
+	1    6450 2750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6050 2800 6450 2800
+Wire Wire Line
+	6450 2800 6450 2750
 $EndSCHEMATC
