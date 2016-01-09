@@ -31,6 +31,8 @@ static uint8_t uart_rx_buffer[BUFFER_SIZE]; 	// UART received message buffer
 static bool can_error_flag;
 static uint32_t can_error_info;
 
+static uint32_t lastPrint;
+
 // -------------------------------------------------------------
 // Helper Functions
 
@@ -166,6 +168,8 @@ int main(void)
 	can_error_flag = false;
 	can_error_info = 0;
 
+	lastPrint = msTicks;
+
 	while (1) {
         
 		if (can_error_flag) {
@@ -175,7 +179,7 @@ int main(void)
 			Board_UART_Println(str);
 		}
 
-		if(msTicks % 200 == 0){								// 5 times per second
+		if(lastPrint+200<msTicks){							// 5 times per second
      			curr_rpm = 60 * SystemCoreClock/rpm_ticks/GMB_EDGES_PER_ROTATION;	// Convert from ticks to rpm
 			itoa(curr_rpm, rpm_str, 10); 						// Convert to string
 			rpm_ticks = 0;								// Set the average time back to 0
@@ -189,6 +193,7 @@ int main(void)
 			msg_obj.dlc = 2;
 			msg_obj.data_16[0] = curr_rpm;
 			LPC_CCAN_API->can_transmit(&msg_obj);	//Transmit to the Vehicle
+			lastPrint = msTicks;							// Reset the .2 second timer
 		}
 
 	}
