@@ -35,7 +35,6 @@ LIBS:MITEVT_mcontrollers
 LIBS:MITEVT_OPTO
 LIBS:MITEVT_power
 LIBS:MITEVT_REG
-LIBS:zsr1000gta
 LIBS:final_outline-cache
 EELAYER 25 0
 EELAYER END
@@ -474,4 +473,31 @@ F 3 "" H 3250 3700 50  0000 C CNN
 	1    3250 3700
 	1    0    0    -1  
 $EndComp
+NoConn ~ 7600 2600
+NoConn ~ 7600 2700
+NoConn ~ 7600 2800
+NoConn ~ 7600 2900
+NoConn ~ 7600 3100
+NoConn ~ 7600 3300
+NoConn ~ 7600 3400
+NoConn ~ 7600 3500
+NoConn ~ 7600 3600
+NoConn ~ 7600 3800
+NoConn ~ 7600 3900
+NoConn ~ 7600 4150
+NoConn ~ 7600 4350
+NoConn ~ 7600 4850
+NoConn ~ 7600 5150
+NoConn ~ 4950 5250
+NoConn ~ 4950 5150
+NoConn ~ 4950 5050
+NoConn ~ 4950 4950
+NoConn ~ 4950 4650
+NoConn ~ 4950 4550
+NoConn ~ 4950 4050
+NoConn ~ 4950 3950
+NoConn ~ 4950 3850
+NoConn ~ 4950 3650
+NoConn ~ 4950 3550
+NoConn ~ 4950 3350
 $EndSCHEMATC

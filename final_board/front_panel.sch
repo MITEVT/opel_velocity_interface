@@ -35,7 +35,6 @@ LIBS:MITEVT_mcontrollers
 LIBS:MITEVT_OPTO
 LIBS:MITEVT_power
 LIBS:MITEVT_REG
-LIBS:zsr1000gta
 LIBS:final_outline-cache
 EELAYER 25 0
 EELAYER END
@@ -74,7 +73,7 @@ F 3 "" H 3000 2500 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 Text HLabel 2800 2050 0    60   Output ~ 0
-+12V
++5V
 Text HLabel 4300 2050 2    60   Output ~ 0
 RXD
 Text HLabel 2800 1800 0    60   Input ~ 0
