@@ -36,6 +36,8 @@
 *.sh
 .DS_Store
 
+*.kicad_pcb-bak
+
 firmware/bin/
 firmware/testbin/
 firmware/doc/
