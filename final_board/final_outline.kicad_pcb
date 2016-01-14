@@ -1,9 +1,9 @@
-(kicad_pcb (version 4) (host pcbnew 4.0.1-stable)
+(kicad_pcb (version 4) (host pcbnew 4.0.0-stable)
 
   (general
     (links 117)
     (no_connects 0)
-    (area 98.806 49.875 215 135.483792)
+    (area 102.424999 52.924999 202.075001 128.075001)
     (thickness 1.6)
     (drawings 6)
     (tracks 425)
@@ -1177,7 +1177,7 @@
     )
   )
 
-  (module Capacitors_SMD:C_0603_HandSoldering (layer F.Cu) (tedit 5691480D) (tstamp 5663218A)
+  (module Capacitors_SMD:C_0603_HandSoldering (layer F.Cu) (tedit 569700DC) (tstamp 5663218A)
     (at 180.975 98.171 270)
     (descr "Capacitor SMD 0603, hand soldering")
     (tags "capacitor 0603")
@@ -1326,7 +1326,7 @@
       (net 25 GND))
   )
 
-  (module Resistors_SMD:R_0603_HandSoldering (layer F.Cu) (tedit 56914811) (tstamp 566321A8)
+  (module Resistors_SMD:R_0603_HandSoldering (layer F.Cu) (tedit 569700E4) (tstamp 566321A8)
     (at 184.15 98.298 90)
     (descr "Resistor SMD 0603, hand soldering")
     (tags "resistor 0603")
@@ -1335,7 +1335,7 @@
     (fp_text reference R601 (at -0.127 -1.651 90) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value 1k (at -2.794 0 180) (layer F.Fab)
+    (fp_text value 100k (at -2.794 0.508 180) (layer F.Fab)
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -2 -0.8) (end 2 -0.8) (layer F.CrtYd) (width 0.05))
@@ -1355,7 +1355,7 @@
     )
   )
 
-  (module Resistors_SMD:R_0603_HandSoldering (layer F.Cu) (tedit 569147FC) (tstamp 566321AE)
+  (module Resistors_SMD:R_0603_HandSoldering (layer F.Cu) (tedit 569700E0) (tstamp 566321AE)
     (at 177.673 98.298 270)
     (descr "Resistor SMD 0603, hand soldering")
     (tags "resistor 0603")
@@ -1364,7 +1364,7 @@
     (fp_text reference R602 (at 0 1.651 270) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value 1k (at 2.794 0 360) (layer F.Fab)
+    (fp_text value 100k (at 2.921 0.381 360) (layer F.Fab)
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -2 -0.8) (end 2 -0.8) (layer F.CrtYd) (width 0.05))
