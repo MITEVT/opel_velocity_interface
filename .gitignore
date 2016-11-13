@@ -9,7 +9,6 @@
 *.pch
 
 # Libraries
-*.lib
 *.a
 *.la
 *.lo
@@ -29,6 +28,7 @@
 *.hex
 *.axf
 *.map
+*.zip
 
 # Utilities
 *.jar
