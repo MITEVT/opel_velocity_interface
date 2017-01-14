@@ -180,7 +180,8 @@ int main(void)
 		}
 
 		if(lastPrint+200<msTicks){							// 5 times per second
-     			curr_rpm = 60 * SystemCoreClock/rpm_ticks/GMB_EDGES_PER_ROTATION;	// Convert from ticks to rpm
+ //    			curr_rpm = 60 * SystemCoreClock/rpm_ticks/GMB_EDGES_PER_ROTATION;	// Convert from ticks to rpm
+			curr_rpm = 100; 						// test
 			itoa(curr_rpm, rpm_str, 10); 						// Convert to string
 			rpm_ticks = 0;								// Set the average time back to 0
 			rpm_count = 0;								// Set the count for the average back to 0

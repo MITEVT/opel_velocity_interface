@@ -1,4 +1,4 @@
-ARM GAS  /tmp/cctwUHTh.s 			page 1
+ARM GAS  /tmp/ccoKyruj.s 			page 1
 
 
    1              	# 1 "../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S"
@@ -58,7 +58,7 @@ ARM GAS  /tmp/cctwUHTh.s 			page 1
   47              	    .equ    Heap_Size, 0x00001000
   48              	#endif
   49              	    .globl  __HeapBase
-ARM GAS  /tmp/cctwUHTh.s 			page 2
+ARM GAS  /tmp/ccoKyruj.s 			page 2
 
 
   50              	    .globl  __HeapLimit
@@ -118,7 +118,7 @@ ARM GAS  /tmp/cctwUHTh.s 			page 1
  100 007c 00000000 	    .long   I2C_IRQHandler		        /* 16+15: I2C Handler			 */
  101 0080 00000000 	    .long   TIMER16_0_IRQHandler        /* 16+16: 16-bit Counter-Timer 0 */
  102 0084 00000000 	    .long   TIMER16_1_IRQHandler        /* 16+17: 16-bit Counter-Timer 1 */
-ARM GAS  /tmp/cctwUHTh.s 			page 3
+ARM GAS  /tmp/ccoKyruj.s 			page 3
 
 
  103 0088 00000000 	    .long   TIMER32_0_IRQHandler        /* 16+18: 32-bit Counter-Timer 0 */
@@ -178,7 +178,7 @@ ARM GAS  /tmp/cctwUHTh.s 			page 1
  156              	
  157              	    .weak   HardFault_Handler
  158              	    .type   HardFault_Handler, %function
-ARM GAS  /tmp/cctwUHTh.s 			page 4
+ARM GAS  /tmp/ccoKyruj.s 			page 4
 
 
  159              	HardFault_Handler:
@@ -238,7 +238,7 @@ ARM GAS  /tmp/cctwUHTh.s 			page 1
  201              	    IRQ     TIMER32_0_IRQHandler
  201              	>  .weak TIMER32_0_IRQHandler
  201              	>  .set TIMER32_0_IRQHandler,Default_Handler
-ARM GAS  /tmp/cctwUHTh.s 			page 5
+ARM GAS  /tmp/ccoKyruj.s 			page 5
 
 
  202              	    IRQ     TIMER32_1_IRQHandler
@@ -274,49 +274,49 @@ ARM GAS  /tmp/cctwUHTh.s 			page 1
  212              	
  213              	
  214              	    .end
-ARM GAS  /tmp/cctwUHTh.s 			page 6
+ARM GAS  /tmp/ccoKyruj.s 			page 6
 
 
 DEFINED SYMBOLS
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:21     .stack:0000000000000000 $d
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:25     *ABS*:0000000000000200 Stack_Size
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:32     .stack:0000000000000200 __StackTop
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:29     .stack:0000000000000000 __StackLimit
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:43     .heap:0000000000000000 $d
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:47     *ABS*:0000000000001000 Heap_Size
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:51     .heap:0000000000000000 __HeapBase
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:56     .heap:0000000000001000 __HeapLimit
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:63     .isr_vector:0000000000000000 $d
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:65     .isr_vector:0000000000000000 __isr_vector
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:131    .isr_vector:00000000000000c0 Reset_Handler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:153    .text:0000000000000000 NMI_Handler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:159    .text:0000000000000002 HardFault_Handler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:165    .text:0000000000000004 SVC_Handler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:171    .text:0000000000000006 PendSV_Handler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:177    .text:0000000000000008 SysTick_Handler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:000000000000000a WAKEUP_IRQHandler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:000000000000000a CAN_IRQHandler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:000000000000000a SSP1_IRQHandler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:000000000000000a I2C_IRQHandler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:000000000000000a TIMER16_0_IRQHandler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:000000000000000a TIMER16_1_IRQHandler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:000000000000000a TIMER32_0_IRQHandler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:000000000000000a TIMER32_1_IRQHandler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:000000000000000a SSP0_IRQHandler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:000000000000000a UART_IRQHandler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:000000000000000a ADC_IRQHandler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:000000000000000a WDT_IRQHandler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:000000000000000a BOD_IRQHandler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:000000000000000a PIOINT3_IRQHandler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:000000000000000a PIOINT2_IRQHandler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:000000000000000a PIOINT1_IRQHandler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:000000000000000a PIOINT0_IRQHandler
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:133    .isr_vector:00000000000000c0 $t
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:142    .isr_vector:00000000000000c8 $d
-            .ARM.exidx.isr_vector:0000000000000000 $d
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:154    .text:0000000000000000 $t
-../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:000000000000000a Default_Handler
-                   .debug_aranges:000000000000000c $d
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:21     .stack:00000000 $d
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:25     *ABS*:00000200 Stack_Size
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:32     .stack:00000200 __StackTop
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:29     .stack:00000000 __StackLimit
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:43     .heap:00000000 $d
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:47     *ABS*:00001000 Heap_Size
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:51     .heap:00000000 __HeapBase
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:56     .heap:00001000 __HeapLimit
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:63     .isr_vector:00000000 $d
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:65     .isr_vector:00000000 __isr_vector
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:131    .isr_vector:000000c0 Reset_Handler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:153    .text:00000000 NMI_Handler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:159    .text:00000002 HardFault_Handler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:165    .text:00000004 SVC_Handler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:171    .text:00000006 PendSV_Handler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:177    .text:00000008 SysTick_Handler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:0000000a WAKEUP_IRQHandler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:0000000a CAN_IRQHandler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:0000000a SSP1_IRQHandler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:0000000a I2C_IRQHandler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:0000000a TIMER16_0_IRQHandler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:0000000a TIMER16_1_IRQHandler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:0000000a TIMER32_0_IRQHandler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:0000000a TIMER32_1_IRQHandler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:0000000a SSP0_IRQHandler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:0000000a UART_IRQHandler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:0000000a ADC_IRQHandler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:0000000a WDT_IRQHandler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:0000000a BOD_IRQHandler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:0000000a PIOINT3_IRQHandler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:0000000a PIOINT2_IRQHandler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:0000000a PIOINT1_IRQHandler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:0000000a PIOINT0_IRQHandler
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:133    .isr_vector:000000c0 $t
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:142    .isr_vector:000000c8 $d
+            .ARM.exidx.isr_vector:00000000 $d
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:154    .text:00000000 $t
+../../lpc11cx4-library/lpc_chip_11cxx_lib/src/startup_LPC11xx.S:186    .text:0000000a Default_Handler
+                   .debug_aranges:0000000c $d
 
 UNDEFINED SYMBOLS
 SystemInit
