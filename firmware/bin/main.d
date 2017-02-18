@@ -43,7 +43,8 @@ bin/main.o: src/main.c inc/board.h \
  /usr/arm-none-eabi/include/machine/_types.h \
  /usr/arm-none-eabi/include/sys/lock.h \
  /usr/arm-none-eabi/include/sys/cdefs.h \
- /usr/arm-none-eabi/include/sys/string.h
+ /usr/arm-none-eabi/include/sys/string.h \
+ ../../lpc11cx4-library/evt_lib/inc/can.h
 
 inc/board.h:
 
@@ -138,3 +139,5 @@ inc/board.h:
 /usr/arm-none-eabi/include/sys/cdefs.h:
 
 /usr/arm-none-eabi/include/sys/string.h:
+
+../../lpc11cx4-library/evt_lib/inc/can.h:

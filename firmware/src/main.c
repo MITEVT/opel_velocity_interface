@@ -1,11 +1,11 @@
 #include "board.h"
-#include <string.h>
+#include "can.h"
 
 // -------------------------------------------------------------
 // Macro Definitions
 
 #define CCAN_BAUD_RATE 500000 					// Desired CAN Baud Rate
-#define UART_BAUD_RATE 9600 					// Desired UART Baud Rate
+#define UART_BAUD_RATE 115200 					// Desired UART Baud Rate
 #define GMB_EDGES_PER_ROTATION 49	 		        // Clock edges per wheel rotation for GBM wheel bearing sensor
 
 #define BUFFER_SIZE 8
@@ -21,6 +21,7 @@ volatile static uint32_t rpm_ticks;	// The current running average of time
 volatile static uint32_t rpm_count;	// Number of samples taken since the last output
 volatile static uint16_t curr_rpm;	// Current RPM measurement
 
+CCAN_MSG_OBJ_T rx_msg;
 static CCAN_MSG_OBJ_T msg_obj; 			// Message Object data structure for manipulating CAN messages
 static RINGBUFF_T can_rx_buffer; 		// Ring Buffer for storing received CAN messages
 static CCAN_MSG_OBJ_T _rx_buffer[BUFFER_SIZE]; 	// Underlying array used in ring buffer
@@ -45,38 +46,19 @@ void _delay(uint32_t ms) {
 	while ((msTicks - curTicks) < ms);
 }
 
+static void Print_Buffer(uint8_t* buff, uint8_t buff_size) {
+    Chip_UART_SendBlocking(LPC_USART, "0x", 2);
+    uint8_t i;
+    for(i = 0; i < buff_size; i++) {
+        itoa(buff[i], str, 16);
+        if(buff[i] < 16) {
+            Chip_UART_SendBlocking(LPC_USART, "0", 1);
+        }
+        Chip_UART_SendBlocking(LPC_USART, str, 2);
+    }
+}
 // -------------------------------------------------------------
-// CAN Driver Callback Functions
 
-/*	CAN receive callback */
-/*	Function is executed by the Callback handler after
-    a CAN message has been received */
-void CAN_rx(uint8_t msg_obj_num) {
-	/* Determine which CAN message has been received */
-	msg_obj.msgobj = msg_obj_num;
-	/* Now load up the msg_obj structure with the CAN message */
-	LPC_CCAN_API->can_receive(&msg_obj);
-	if (msg_obj_num == 1) {
-		RingBuffer_Insert(&can_rx_buffer, &msg_obj);
-	}
-}
-
-/*	CAN transmit callback */
-/*	Function is executed by the Callback handler after
-    a CAN message has been transmitted */
-void CAN_tx(uint8_t msg_obj_num) {
-	msg_obj_num = msg_obj_num;
-}
-
-/*	CAN error callback */
-/*	Function is executed by the Callback handler after
-    an error has occurred on the CAN bus */
-void CAN_error(uint32_t error_info) {
-	can_error_info = error_info;
-	can_error_flag = true;
-}
-
-// -------------------------------------------------------------
 // Interrupt Service Routines
 
 void TIMER32_0_IRQHandler(void){
@@ -96,25 +78,22 @@ int main(void)
 		// Unrecoverable Error. Hang.
 		while(1);
 	}
-
-	//---------------
-	// Initialize GPIO and LED as output
-	Board_LEDs_Init();
-	Board_LED_On(LED0);
-
 	//---------------
 	// Initialize UART Communication
 	Board_UART_Init(UART_BAUD_RATE);
 	Board_UART_Println("Started up");
 
 	//---------------
+	// Initialize GPIO and LED as output
+//	Board_LEDs_Init();
+//	Board_LED_On(LED0);
+
+	//---------------
 	// Initialize CAN  and CAN Ring Buffer
 
-	RingBuffer_Init(&can_rx_buffer, _rx_buffer, sizeof(CCAN_MSG_OBJ_T), BUFFER_SIZE);
-	RingBuffer_Flush(&can_rx_buffer);
-	Board_CAN_Init(CCAN_BAUD_RATE, CAN_rx, CAN_tx, CAN_error);
+	CAN_Init(CCAN_BAUD_RATE);
 
-	rpm_count = 0;
+//	rpm_count = 0;
 
 	Board_Setup_Timers();
 
@@ -140,10 +119,6 @@ int main(void)
 
 	*/
 
-	msg_obj.msgobj = 1;
-	msg_obj.mode_id = 0x703;
-	msg_obj.mask = 0x7FF;
-	LPC_CCAN_API->config_rxmsgobj(&msg_obj);
 
 	/* [Tutorial] How do I send a CAN Message?
 
@@ -164,38 +139,76 @@ int main(void)
 		LPC_CCAN_API->can_transmit(&msg_obj);
 
 	*/
-
+	uint32_t ret;
+	uint32_t reset_can_peripheral_time;
+	const uint32_t can_error_delay = 5000;
+	bool reset_can_peripheral = false;
 	can_error_flag = false;
 	can_error_info = 0;
-
-	lastPrint = msTicks;
+	uint8_t heartbeat[1];
+	heartbeat[0] = 0x00; 
+	uint8_t t=0x04;
 
 	while (1) {
+
+		if (lastPrint<msTicks-200) {
+//			Board_UART_Println("Sending heartbeat");
+//			Board_UART_PrintNum(heartbeat[0],16,True;
+			CAN_Transmit(0x703,heartbeat,1);
+			lastPrint = msTicks;
+		}/* //increments velocity msg
+		heartbeat[0] = heartbeat[0]+t;
+		if (heartbeat[0]>0xF0) {
+			heartbeat[0]=0x00;
+		}*/
+		if(reset_can_peripheral && msTicks > reset_can_peripheral_time) {
+		    Board_UART_Println("Attempting to reset CAN peripheral...");
+		    CAN_ResetPeripheral();
+		    CAN_Init(CCAN_BAUD_RATE);
+		    Board_UART_Println("Reset CAN peripheral. ");
+		    reset_can_peripheral = false;
+		}
+
+
+            // recieve message if there is a message
+		    ret = CAN_Receive(&rx_msg);
+		    if(ret == NO_RX_CAN_MESSAGE) {
+//		        Board_UART_Println("No CAN message received...");
+		    } else if(ret == NO_CAN_ERROR) {
+		        Board_UART_Print("Recieved data ");
+		        Print_Buffer(rx_msg.data, rx_msg.dlc);
+		        Board_UART_Print(" from ");
+		        Board_UART_PrintNum(rx_msg.mode_id,16,true);
+		    } else {
+		        Board_UART_Print("CAN Error: ");
+		        Board_UART_PrintNum(ret, 2,true);
+
+		        Board_UART_Print("Will attempt to reset peripheral in ");
+		        Board_UART_PrintNum(can_error_delay/1000,10,false);
+		        Board_UART_Println(" seconds.");
+		        reset_can_peripheral = true;
+		        reset_can_peripheral_time = msTicks + can_error_delay;
+		    }
+
+		uint8_t count;
+		uint8_t data[1];	
         
-		if (can_error_flag) {
-			can_error_flag = false;
-			Board_UART_Print("CAN Error: 0b");
-			itoa(can_error_info, str, 2);
-			Board_UART_Println(str);
+		if ((count = Chip_UART_Read(LPC_USART, uart_rx_buffer, BUFFER_SIZE)) != 0) {
+			switch (uart_rx_buffer[0]) {
+				case 'a':
+					Board_UART_Println("Sending CAN with ID: 0x600");
+					data[0] = 0xAA;
+					ret = CAN_Transmit(0x600, data, 1);
+					    if(ret != NO_CAN_ERROR) {
+						Board_UART_Print("CAN Error: ");
+						Board_UART_PrintNum(ret, 2,true);
+
+					    }
+					break;
+				default:
+					Board_UART_Println("Invalid Command");
+					break;
+			}
 		}
-
-		if(lastPrint+200<msTicks){							// 5 times per second
- //    			curr_rpm = 60 * SystemCoreClock/rpm_ticks/GMB_EDGES_PER_ROTATION;	// Convert from ticks to rpm
-			curr_rpm = 100; 						// test
-			itoa(curr_rpm, rpm_str, 10); 						// Convert to string
-			rpm_ticks = 0;								// Set the average time back to 0
-			rpm_count = 0;								// Set the count for the average back to 0
-
-			Board_UART_Print("Sending wheel velocity CAN message with ID: 0x703 Data: ");	// Print a UART Message with the current rpm
-			Board_UART_Println(rpm_str);
-
-			msg_obj.mode_id = 0x703;		//Setup the CAN message
-			msg_obj.msgobj = 2;
-			msg_obj.dlc = 2;
-			msg_obj.data_16[0] = curr_rpm;
-			LPC_CCAN_API->can_transmit(&msg_obj);	//Transmit to the Vehicle
-			lastPrint = msTicks;							// Reset the .2 second timer
-		}
-
 	}
 }

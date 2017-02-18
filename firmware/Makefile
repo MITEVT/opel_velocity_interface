@@ -13,12 +13,11 @@
 
 TOOLCHAIN = arm-none-eabi-
 
-CXX_CROSS = $(TOOLCHAIN)g++
-CC_CROSS = $(TOOLCHAIN)gcc
-AS_CROSS = $(TOOLCHAIN)gcc -x assembler-with-cpp
-OBJCOPY_CROSS = $(TOOLCHAIN)objcopy
-OBJDUMP_CROSS = $(TOOLCHAIN)objdump
-SIZE_CROSS = $(TOOLCHAIN)size
+CC = $(TOOLCHAIN)gcc
+AS = $(TOOLCHAIN)gcc -x assembler-with-cpp
+OBJCOPY = $(TOOLCHAIN)objcopy
+OBJDUMP = $(TOOLCHAIN)objdump
+SIZE = $(TOOLCHAIN)size
 RM = rm -f
 
 #=============================================================================#
@@ -26,7 +25,6 @@ RM = rm -f
 #=============================================================================#
 
 UNITY_BASE=../Unity
-CXX_TEST = g++
 CC_TEST = gcc
 AS_TEST = gcc -x assembler-with-cpp
 SIZE_TEST = size
@@ -37,7 +35,7 @@ LINT = oclint
 #=============================================================================#
 
 # project name
-PROJECT = BCM
+PROJECT = opel_velocity_interface
 
 # core type
 CORE = cortex-m0
@@ -48,27 +46,15 @@ LD_SCRIPT = gcc.ld
 # output folder (absolute or relative path, leave empty for in-tree compilation)
 OUT_DIR = bin
 
-# test out folder
-OUT_DIR_TEST = testbin
-
-# directories for testing sources
-TEST_SRCS_DIRS = test $(UNITY_BASE)/src $(UNITY_BASE)/extras/fixture/src
-
-# c files for testing
-C_SRCS_TEST = $(wildcard $(patsubst %, %/*.$(C_EXT), . $(TEST_SRCS_DIRS))) src/charge.c src/ssm.c src/drain.c src/pack_manager.c ../lpc11cx4-library/evt_lib/src/brusa.c ../lpc11cx4-library/evt_lib/src/a123mbb.c
-
-# C++ definitions (e.g. "-Dsymbol_with_value=0xDEAD -Dsymbol_without_value")
-CXX_DEFS =
-
 # C definitions
-C_DEFS = -DCORE_M0
+C_DEFS = -DCORE_M0 -DDEBUG_ENABLE
 
 # ASM definitions
-AS_DEFS = -DRAM_MODE=1
+AS_DEFS = -D__STARTUP_CLEAR_BSS -D__START=main
 
 # include directories (absolute or relative paths to additional folders with
 # headers, current folder is always included)
-INC_DIRS_CROSS = ../../lpc11cx4-library/lpc_chip_11cxx_lib/inc ../../lpc11cx4-library/evt_lib/inc inc
+INC_DIRS_CROSS = inc/ ../../lpc11cx4-library/lpc_chip_11cxx_lib/inc ../../lpc11cx4-library/evt_lib/inc/
 
 # library directories (absolute or relative paths to additional folders with
 # libraries)
@@ -80,17 +66,7 @@ LIBS =
 
 # additional directories with source files (absolute or relative paths to
 # folders with source files, current folder is always included)
-SRCS_DIRS = ../../lpc11cx4-library/lpc_chip_11cxx_lib/src ../../lpc11cx4-library/evt_lib/src src
-
-# include directories for test
-INC_DIRS_TEST = $(INC_DIRS_CROSS) $(SRCS_DIRS) test $(UNITY_BASE)/src $(UNITY_BASE)/extras/fixture/src
-
-# extension of C++ files
-CXX_EXT = cpp
-
-# wildcard for C++ source files (all files with CXX_EXT extension found in
-# current folder and SRCS_DIRS folders will be compiled and linked)
-CXX_SRCS = $(wildcard $(patsubst %, %/*.$(CXX_EXT), . $(SRCS_DIRS)))
+SRCS_DIRS = ../../lpc11cx4-library/lpc_chip_11cxx_lib/src ../../lpc11cx4-library/evt_lib/src/ src/
 
 # extension of C files
 C_EXT = c
@@ -108,24 +84,33 @@ AS_SRCS = $(wildcard $(patsubst %, %/*.$(AS_EXT), . $(SRCS_DIRS)))
 
 # optimization flags ("-O0" - no optimization, "-O1" - optimize, "-O2" -
 # optimize even more, "-Os" - optimize for size or "-O3" - optimize yet more) 
-OPTIMIZATION = -Os
+OPTIMIZATION = -O2
 
 # set to 1 to optimize size by removing unused code and data during link phase
 REMOVE_UNUSED = 1
 
-# set to 1 to compile and link additional code required for C++
-USES_CXX = 0
-
 # define warning options here
-CXX_WARNINGS = -Wall -Wextra
 C_WARNINGS = -Wall -Wstrict-prototypes -Wextra
-
-# C++ language standard ("c++98", "gnu++98" - default, "c++0x", "gnu++0x")
-CXX_STD = gnu++98
 
 # C language standard ("c89" / "iso9899:1990", "iso9899:199409",
 # "c99" / "iso9899:1999", "gnu89" - default, "gnu99")
 C_STD = gnu89
+
+#=============================================================================#
+# Unit Testing Configuration
+#=============================================================================#
+
+# test out folder
+OUT_DIR_TEST = testbin
+
+# include directories for test
+INC_DIRS_TEST = $(INC_DIRS_CROSS) $(SRCS_DIRS) test $(UNITY_BASE)/src $(UNITY_BASE)/extras/fixture/src
+
+# directories for testing sources
+TEST_SRCS_DIRS = test $(UNITY_BASE)/src $(UNITY_BASE)/extras/fixture/src
+
+# c files for testing
+C_SRCS_TEST = $(wildcard $(patsubst %, %/*.$(C_EXT), . $(TEST_SRCS_DIRS))) src/charge.c src/ssm.c src/discharge.c src/bms_utils.c src/board.c src/error_handler.c
 
 #=============================================================================#
 # Write Configuration
@@ -133,7 +118,7 @@ C_STD = gnu89
 
 COMPORT = $(word 1, $(wildcard /dev/tty.usbserial-*) $(wildcard /dev/ttyUSB*))
 BAUDRATE = 115200
-CLOCK_OSC = 12000
+CLOCK_OSC = 0
 
 #=============================================================================#
 # Lint Configuration
@@ -174,53 +159,42 @@ endif
 # core flags
 CORE_FLAGS = -mcpu=$(CORE) -mthumb
 
-# flags for C++ compiler
-CXX_FLAGS = -std=$(CXX_STD) -g -ggdb3 -fno-rtti -fno-exceptions -fverbose-asm -Wa,-ahlms=$(OUT_DIR_F)$(notdir $(<:.$(CXX_EXT)=.lst))
-
 # flags for C compiler
-C_FLAGS = -std=$(C_STD) -g -ggdb3 -fverbose-asm -Wa,-ahlms=$(OUT_DIR_F)$(notdir $(<:.$(C_EXT)=.lst)) -fstack-usage
+C_FLAGS = -fdiagnostics-color=always -std=$(C_STD) -g -ggdb3 -fverbose-asm -Wa,-ahlms=$(OUT_DIR_F)$(notdir $(<:.$(C_EXT)=.lst)) -DUART_BAUD=$(BAUDRATE)
+#			add diagnostic colors		c standard	debug(?) extra comments	
 
 # flags for assembler
 AS_FLAGS = -g -ggdb3 -Wa,-amhls=$(OUT_DIR_F)$(notdir $(<:.$(AS_EXT)=.lst))
 
 # flags for linker
-LD_FLAGS = -T$(LD_SCRIPT) -g -Wl,-Map=$(OUT_DIR_F)$(PROJECT).map,--cref,--no-warn-mismatch
+LD_FLAGS = -T$(LD_SCRIPT) -g -nostartfiles -Wl,-Map=$(OUT_DIR_F)$(PROJECT).map,--cref
 
 # flags for lint
 LINT_FLAGS = -rc LONG_LINE=$(MAX_LINE_SIZE)
 
 # process option for removing unused code
 ifeq ($(REMOVE_UNUSED), 1)
+	# enable garbage collection of unused sections
 	LD_FLAGS += -Wl,--gc-sections
+	# put functions and data into their own sections
 	OPTIMIZATION += -ffunction-sections -fdata-sections
-endif
-
-# if __USES_CXX is defined for ASM then code for global/static constructors /
-# destructors is compiled; if -nostartfiles option for linker is added then C++
-# initialization / finalization code is not linked
-ifeq ($(USES_CXX), 1)
-	AS_DEFS += -D__USES_CXX
-else
-	LD_FLAGS += -nostartfiles
 endif
 
 #=============================================================================#
 # do some formatting
 #=============================================================================#
 
-CXX_OBJS_TEST = $(addprefix $(OUT_DIR_TEST_F), $(notdir $(CXX_SRCS_TEST:.$(CXX_EXT)=.o)))
 C_OBJS_TEST = $(addprefix $(OUT_DIR_TEST_F), $(notdir $(C_SRCS_TEST:.$(C_EXT)=.o)))
-AS_OBJS_TEST = $(addprefix $(OUT_DIR__TESTF), $(notdir $(AS_SRCS_TEST:.$(AS_EXT)=.o)))
+AS_OBJS_TEST = $(addprefix $(OUT_DIR_TEST_F), $(notdir $(AS_SRCS_TEST:.$(AS_EXT)=.o)))
 
-TEST_OBJS = $(AS_OBJS_TEST) $(C_OBJS_TEST) $(CXX_OBJS_TEST)
+TEST_OBJS = $(AS_OBJS_TEST) $(C_OBJS_TEST)
 
-CXX_OBJS = $(addprefix $(OUT_DIR_F), $(notdir $(CXX_SRCS:.$(CXX_EXT)=.o)))
 C_OBJS = $(addprefix $(OUT_DIR_F), $(notdir $(C_SRCS:.$(C_EXT)=.o)))
 AS_OBJS = $(addprefix $(OUT_DIR_F), $(notdir $(AS_SRCS:.$(AS_EXT)=.o)))
-OBJS_F = $(AS_OBJS) $(C_OBJS) $(CXX_OBJS) $(USER_OBJS)
+OBJS = $(AS_OBJS) $(C_OBJS) $(USER_OBJS)
 DEPS = $(OBJS:.o=.d)
-INC_DIRS_F_CROSS = -I. $(patsubst %, -I%, $(INC_DIRS_CROSS))
-LIB_DIRS_F_CROSS = $(patsubst %, -L%, $(LIB_DIRS))
+INC_DIRS_F = -I. $(patsubst %, -I%, $(INC_DIRS_CROSS))
+LIB_DIRS_F = $(patsubst %, -L%, $(LIB_DIRS))
 
 INC_DIRS_F_TEST = -I. $(patsubst %, -I%, $(INC_DIRS_TEST))
 
@@ -232,46 +206,34 @@ DMP = $(OUT_DIR_F)$(PROJECT).dmp
 
 TEST_TARGET = $(OUT_DIR_TEST_F)$(PROJECT)
 
-# format final flags for tools, request dependancies for C++, C and asm
-CXX_FLAGS_F_CROSS = $(CORE_FLAGS) $(OPTIMIZATION) $(CXX_WARNINGS) $(CXX_FLAGS)  $(CXX_DEFS) -MD -MP -MF $(OUT_DIR_F)$(@F:.o=.d) $(INC_DIRS_F_CROSS)
-C_FLAGS_F_CROSS = $(CORE_FLAGS) $(OPTIMIZATION) $(C_WARNINGS) $(C_FLAGS) $(C_DEFS) -MD -MP -MF $(OUT_DIR_F)$(@F:.o=.d) $(INC_DIRS_F_CROSS)
-AS_FLAGS_F_CROSS = $(CORE_FLAGS) $(AS_FLAGS) $(AS_DEFS) -MD -MP -MF $(OUT_DIR_F)$(@F:.o=.d) $(INC_DIRS_F_CROSS)
+# format final flags for tools, request dependancies for C and asm
+C_FLAGS_F_CROSS = $(CORE_FLAGS) $(OPTIMIZATION) $(C_WARNINGS) $(C_FLAGS) $(C_DEFS) -MD -MP -MF $(OUT_DIR_F)$(@F:.o=.d) $(INC_DIRS_F)
+AS_FLAGS_F_CROSS = $(CORE_FLAGS) $(AS_FLAGS) $(AS_DEFS) -MD -MP -MF $(OUT_DIR_F)$(@F:.o=.d) $(INC_DIRS_F)
 LD_FLAGS_F_CROSS = $(CORE_FLAGS) $(LD_FLAGS) $(LIB_DIRS_F_CROSS)
 
-CXX_FLAGS_F_TEST = $(OPTIMIZATION) $(CXX_WARNINGS) $(CXX_FLAGS) $(CXX_DEFS) -MD -MP -MF $(OUT_DIR_F)$(@F:.o=.d) $(INC_DIRS_F_TEST)
-C_FLAGS_F_TEST =  $(OPTIMIZATION) $(C_WARNINGS) $(C_DEFS) -MD -MP -MF $(OUT_DIR_F)$(@F:.o=.d) $(INC_DIRS_F_TEST)
+# format final flags for tools, request dependancies for C and asm
+C_FLAGS_F = $(CORE_FLAGS) $(OPTIMIZATION) $(C_WARNINGS) $(C_FLAGS) $(C_DEFS) -MD -MP -MF $(OUT_DIR_F)$(@F:.o=.d) $(INC_DIRS_F)
+AS_FLAGS_F = $(CORE_FLAGS) $(AS_FLAGS) $(AS_DEFS) -MD -MP -MF $(OUT_DIR_F)$(@F:.o=.d) $(INC_DIRS_F)
+LD_FLAGS_F = $(CORE_FLAGS) $(LD_FLAGS) $(LIB_DIRS_F)
+
+C_FLAGS_F_TEST =  $(OPTIMIZATION) $(C_WARNINGS) $(C_DEFS) -MD -MP -MF $(OUT_DIR_F)$(@F:.o=.d) $(INC_DIRS_F_TEST) -DTEST_HARDWARE
 AS_FLAGS_F_TEST = $(AS_FLAGS) $(AS_DEFS) -MD -MP -MF $(OUT_DIR_F)$(@F:.o=.d) $(INC_DIRS_F_TEST)
-LD_FLAGS_F_TEST = $(LIB_DIRS_F_TEST)
+# LD_FLAGS_F_TEST = $(LIB_DIRS_F_TEST)
 
 #contents of output directory
 GENERATED = $(wildcard $(patsubst %, $(OUT_DIR_F)*.%, bin d dmp elf hex lss lst map o)) $(wildcard $(OUT_DIR_TEST_F)*)
 
-
 #=============================================================================#
 # make all
 #=============================================================================#
-all : cross
 
-cross : CXX 		= $(CXX_CROSS)
-cross : CC 			= $(CC_CROSS)
-cross : AS 			= $(AS_CROSS)
-cross : OBJCOPY 	= $(OBJCOPY_CROSS)
-cross : OBJDUMP 	= $(OBJDUMP_CROSS)
-cross : SIZE 		= $(SIZE_CROSS)
-cross : CXX_FLAGS_F = $(CXX_FLAGS_F_CROSS)
-cross : C_FLAGS_F 	= $(C_FLAGS_F_CROSS)
-cross : AS_FLAGS_F 	= $(AS_FLAGS_F_CROSS)
-cross : LD_FLAGS_F 	= $(LD_FLAGS_F_CROSS)
+all : make_output_dir $(ELF) $(LSS) $(DMP) $(HEX) $(BIN) print_size
 
-cross : make_output_dir $(ELF) $(LSS) $(DMP) $(HEX) $(BIN) print_size
-
-test : CXX 		= $(CXX_TEST)
 test : CC 			= $(CC_TEST)
 test : AS 			= $(AS_TEST)
 test : OBJCOPY 	= $(OBJCOPY_TEST)
 test : OBJDUMP 	= $(OBJDUMP_TEST)
 test : SIZE 		= $(SIZE_TEST)
-test : CXX_FLAGS_F = $(CXX_FLAGS_F_TEST)
 test : C_FLAGS_F 	= $(C_FLAGS_F_TEST)
 test : AS_FLAGS_F 	= $(AS_FLAGS_F_TEST)
 test : LD_FLAGS_F 	= $(LD_FLAGS_F_TEST)
@@ -280,8 +242,11 @@ test : LD_FLAGS_F 	= $(LD_FLAGS_F_TEST)
 test : make_test_output_dir $(TEST_TARGET)
 	./$(TEST_TARGET)
 
+test_writeflash:  AS_DEFS = -D__STARTUP_CLEAR_BSS -D__START=hardware_test
+test_writeflash: all
+
 # make object files dependent on Makefile
-$(OBJS_F) : Makefile
+$(OBJS) : Makefile
 $(TEST_OBJS) : Makefile
 # make .elf file dependent on linker script
 $(ELF) : $(LD_SCRIPT)
@@ -290,29 +255,16 @@ $(ELF) : $(LD_SCRIPT)
 # test_linking - objects -> elf
 #-----------------------------------------------------------------------------#
 $(TEST_TARGET) : $(TEST_OBJS)	
-	echo $(C_SRCS_TEST)
-	@echo 'Linking test target: $(TEST_TARGET)'
-	$(CXX) $(LD_FLAGS_F_TEST) $(TEST_OBJS) $(LIBS) -o $@
+	@$(CC) $(TEST_OBJS) $(LIBS) -o $@
 	@echo ' '
-
-
 
 #-----------------------------------------------------------------------------#
 # linking - objects -> elf
 #-----------------------------------------------------------------------------#
 
-$(ELF) : $(OBJS_F)
+$(ELF) : $(OBJS)
 	@echo 'Linking target: $(ELF)'
-	$(CXX) $(LD_FLAGS_F) $(OBJS_F) $(LIBS) -o $@
-	@echo ' '
-
-#-----------------------------------------------------------------------------#
-# compiling - C++ source -> objects
-#-----------------------------------------------------------------------------#
-
-$(OUT_DIR_F)%.o : %.$(CXX_EXT)
-	@echo 'Compiling file: $<'
-	$(CXX) -c $(CXX_FLAGS_F) $< -o $@
+	$(CC) $(LD_FLAGS_F) $(OBJS) $(LIBS) -o $@
 	@echo ' '
 
 #-----------------------------------------------------------------------------#
@@ -376,7 +328,7 @@ $(LSS) : $(ELF)
 
 print_size :
 	@echo 'Size of modules:'
-	$(SIZE) -B -t --common $(OBJS_F) $(USER_OBJS)
+	$(SIZE) -B -t --common $(OBJS) $(USER_OBJS)
 	@echo ' '
 	@echo 'Size of target .elf file:'
 	$(SIZE) -B $(ELF)
@@ -406,15 +358,15 @@ lint: $(C_SRCS)
 
 writeflash: all
 	@echo "Writing to" $(COMPORT)
-	@lpc21isp -NXPARM $(HEX) $(COMPORT) $(BAUDRATE) $(CLOCK_OSC)
+	lpc21isp -NXPARM -control $(HEX) $(COMPORT) $(BAUDRATE) $(CLOCK_OSC)
 
 #-----------------------------------------------------------------------------#
-# Opening Picocom
+# Open up in picocom
 #-----------------------------------------------------------------------------#
 
 com:
 	@echo "Opening" $(COMPORT)
-	@picocom -b 9600 $(COMPORT)
+	lpc21isp -NXPARM -control -termonly $(HEX) $(COMPORT) $(BAUDRATE) $(CLOCK_OSC)
 
 #=============================================================================#
 # make clean
@@ -426,11 +378,6 @@ ifeq ($(strip $(OUT_DIR_F)), )
 else
 	@echo 'Removing all generated output files from output directory: $(OUT_DIR_F)'
 endif
-ifeq ($(strip $(OUT_DIR_TEST_F)), )
-	@echo 'Removing all generated output files'
-else
-	@echo 'Removing all generated output files from output directory: $(OUT_DIR_TEST_F)'
-endif
 ifneq ($(strip $(GENERATED)), )
 	$(RM) $(GENERATED)
 else
@@ -441,7 +388,7 @@ endif
 # global exports
 #=============================================================================#
 
-.PHONY: all clean dependents writeflash
+.PHONY: all clean dependents
 
 .SECONDARY:
 

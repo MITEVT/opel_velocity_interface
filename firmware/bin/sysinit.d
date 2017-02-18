@@ -29,7 +29,7 @@ bin/sysinit.o: src/sysinit.c \
  ../../lpc11cx4-library/lpc_chip_11cxx_lib/inc/adc_11xx.h \
  ../../lpc11cx4-library/lpc_chip_11cxx_lib/inc/gpio_11xx_2.h \
  ../../lpc11cx4-library/lpc_chip_11cxx_lib/inc/i2c_11xx.h \
- ../../lpc11cx4-library/lpc_chip_11cxx_lib/inc/ccand_11xx.h
+ ../../lpc11cx4-library/lpc_chip_11cxx_lib/inc/ccand_11xx.h src/sysinit.h
 
 /usr/lib/gcc/arm-none-eabi/4.9.3/include/stdint.h:
 
@@ -92,3 +92,5 @@ bin/sysinit.o: src/sysinit.c \
 ../../lpc11cx4-library/lpc_chip_11cxx_lib/inc/i2c_11xx.h:
 
 ../../lpc11cx4-library/lpc_chip_11cxx_lib/inc/ccand_11xx.h:
+
+src/sysinit.h:
