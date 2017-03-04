@@ -146,21 +146,22 @@ int main(void)
 	can_error_flag = false;
 	can_error_info = 0;
 	uint8_t heartbeat[1];
-	heartbeat[0] = 0x00; 
-	uint8_t t=0x04;
+	heartbeat[0] = 0x10; 
+//	uint8_t dt=0x04;
 
 	while (1) {
 
 		if (lastPrint<msTicks-200) {
 //			Board_UART_Println("Sending heartbeat");
-//			Board_UART_PrintNum(heartbeat[0],16,True;
 			CAN_Transmit(0x703,heartbeat,1);
 			lastPrint = msTicks;
-		}/* //increments velocity msg
-		heartbeat[0] = heartbeat[0]+t;
+		}
+		/* //increments velocity msg
+		heartbeat[0] = heartbeat[0]+dt;
 		if (heartbeat[0]>0xF0) {
 			heartbeat[0]=0x00;
 		}*/
+
 		if(reset_can_peripheral && msTicks > reset_can_peripheral_time) {
 		    Board_UART_Println("Attempting to reset CAN peripheral...");
 		    CAN_ResetPeripheral();
@@ -206,7 +207,7 @@ int main(void)
 					    }
 					break;
 				default:
-					Board_UART_Println("Invalid Command");
+					//Board_UART_Println("Invalid Command");
 					break;
 			}
 		}
